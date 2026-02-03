@@ -1,0 +1,23 @@
+# --- Streamlit Secrets ---
+.streamlit/
+secrets.toml
+
+# --- Google Auth Files ---
+# These are your old local files. Never upload these!
+credentials.json
+token.json
+
+# --- Local Databases ---
+
+
+# --- Python Environment ---
+# Your 'venv' is for your Windows machine only. 
+# Streamlit Cloud will build its own using requirements.txt.
+venv/
+env/
+__pycache__/
+*.pyc
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
