@@ -42,11 +42,19 @@ def get_drive_service():
 
     return build('drive', 'v3', credentials=creds)
 
+# UPDATE: Replace your old embedding initializations with this:
+def get_embeddings():
+    return GoogleGenerativeAIEmbeddings(
+        model="models/gemini-embedding-001",
+        output_dimensionality=768
+    )
+
 def get_db_stats():
     if not os.path.exists(DB_PATH):
         return set(), 0, 0
     try:
-        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+        #embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+        embeddings = get_embeddings()
         vector_db = Chroma(persist_directory=DB_PATH, embedding_function=embeddings)
         data = vector_db.get(include=['metadatas', 'documents'])
         if not data or 'metadatas' not in data: return set(), 0, 0
@@ -73,7 +81,8 @@ def save_to_db(docs):
     if not docs: return
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     chunks = text_splitter.split_documents(docs)
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    #embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    embeddings = get_embeddings()
     Chroma.from_documents(documents=chunks, embedding=embeddings, persist_directory=DB_PATH)
 
 
@@ -128,7 +137,8 @@ def process_batch():
 # --- 3. UPDATED RAG ANALYSIS WITH MEMORY ---
 
 def get_llm_analysis(query, chat_history):
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    #embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    embeddings = get_embeddings()
     llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3)
     vector_db = Chroma(persist_directory=DB_PATH, embedding_function=embeddings)
 
