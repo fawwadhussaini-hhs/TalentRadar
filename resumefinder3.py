@@ -45,8 +45,8 @@ def get_drive_service():
 # UPDATE: Replace your old embedding initializations with this:
 def get_embeddings():
     return GoogleGenerativeAIEmbeddings(
-        model="models/gemini-embedding-001",
-        output_dimensionality=768
+        model="models/gemini-embedding-001"
+        #output_dimensionality=768
     )
 
 def get_db_stats():
